@@ -723,10 +723,7 @@ function entrarApp(){
     const current = data.length ? data[data.length - 1] : null;
     const previous = data.length > 1 ? data[data.length - 2] : null;
 
-    animateCounter(
-  document.getElementById("currentSubs"),
-  current ? current.subs : 0
-);
+    document.getElementById("currentSubs").textContent = current ? formatNumber(current.subs) : "0";
 
     let diff = 0;
     if(current && previous) diff = current.subs - previous.subs;
@@ -935,7 +932,6 @@ function entrarApp(){
     render();
     showToast("Datos borrados");
   }
-function animateCounter(element, target){
 
   let start = 0;
 
