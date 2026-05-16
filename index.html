@@ -389,6 +389,16 @@
   border-radius:18px;
   font-size:18px;
 }
+.number-pop{
+  animation:numberPop .28s ease;
+}
+
+@keyframes numberPop{
+  0%{ transform:scale(1); }
+  50%{ transform:scale(1.08); text-shadow:0 0 22px rgba(32,224,112,.65); }
+  100%{ transform:scale(1); }
+}
+
     .toast{
       position:fixed;
       top:18px;
@@ -719,11 +729,40 @@ function entrarApp(){
     return best;
   }
 
+
+  function animateNumber(id, target){
+    const element = document.getElementById(id);
+    if(!element) return;
+
+    const finalValue = Number(target || 0);
+    const duration = 1600;
+    const startTime = performance.now();
+
+    function tick(now){
+      const progress = Math.min((now - startTime) / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      const value = Math.floor(finalValue * ease);
+
+      element.textContent = formatNumber(value);
+
+      if(progress < 1){
+        requestAnimationFrame(tick);
+      }else{
+        element.textContent = formatNumber(finalValue);
+        element.classList.remove("number-pop");
+        void element.offsetWidth;
+        element.classList.add("number-pop");
+      }
+    }
+
+    requestAnimationFrame(tick);
+  }
+
   function renderSummary(){
     const current = data.length ? data[data.length - 1] : null;
     const previous = data.length > 1 ? data[data.length - 2] : null;
 
-    document.getElementById("currentSubs").textContent = current ? formatNumber(current.subs) : "0";
+    animateNumber("currentSubs", current ? current.subs : 0);
 
     let diff = 0;
     if(current && previous) diff = current.subs - previous.subs;
