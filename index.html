@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>STATS ElBauldeChasky</title>
+
+  <meta name="theme-color" content="#050914" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="STATS EBC" />
+
+  <style>
+    :root{
+      --bg:#050914;
+      --card:#0d1424;
+      --card2:#111b2e;
+      --blue:#0077ff;
+      --blue2:#00a6ff;
+      --green:#20e070;
+      --red:#ff3b3b;
+      --yellow:#ffc83d;
+      --text:#f4f7ff;
+      --muted:#91a0b8;
+      --line:rgba(255,255,255,.09);
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(0,119,255,.22), transparent 35%),
+        linear-gradient(180deg,#02050b,#071020 60%,#02050b);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    .app{
+      max-width:430px;
+      margin:0 auto;
+      min-height:100vh;
+      padding:22px 16px 90px;
+    }
+
+    .top{
+      text-align:center;
+      margin:14px 0 26px;
+    }
+
+    .logo{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:10px;
+      font-weight:900;
+      font-size:34px;
+      font-style:italic;
+      letter-spacing:1px;
+      text-shadow:0 0 18px rgba(0,119,255,.7);
+    }
+
+    .logo span{
+      font-size:38px;
+    }
+
+    .brand{
+      color:#00a6ff;
+      font-weight:800;
+      font-size:15px;
+      margin-top:-4px;
+    }
+
+    .hello{
+      margin-top:22px;
+      color:#fff;
+      font-size:17px;
+    }
+
+    .card{
+      background:linear-gradient(145deg,rgba(17,27,46,.96),rgba(9,15,28,.96));
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:18px;
+      margin-bottom:14px;
+      box-shadow:0 12px 30px rgba(0,0,0,.28);
+    }
+
+    .label{
+      color:var(--muted);
+      font-size:12px;
+      text-transform:uppercase;
+      letter-spacing:.7px;
+      margin-bottom:8px;
+    }
+
+    .big{
+      font-size:46px;
+      font-weight:900;
+      line-height:1;
+    }
+
+    .diff{
+      color:var(--green);
+      font-size:35px;
+      font-weight:900;
+    }
+
+    .diff.neg{color:var(--red)}
+    .diff.zero{color:var(--yellow)}
+
+    .sub{
+      color:var(--muted);
+      margin-top:8px;
+      font-size:14px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .mini .value{
+      font-size:28px;
+      font-weight:900;
+    }
+
+    .green{color:var(--green)}
+    .red{color:var(--red)}
+    .yellow{color:var(--yellow)}
+    .blue{color:var(--blue2)}
+
+    button{
+      width:100%;
+      border:0;
+      border-radius:15px;
+      padding:17px;
+      color:white;
+      font-weight:900;
+      font-size:15px;
+      background:linear-gradient(135deg,#0077ff,#005be0);
+      box-shadow:0 0 24px rgba(0,119,255,.35);
+      cursor:pointer;
+    }
+
+    button.secondary{
+      background:#111b2e;
+      box-shadow:none;
+      border:1px solid var(--line);
+    }
+
+    input,textarea{
+      width:100%;
+      background:#070d18;
+      border:1px solid rgba(255,255,255,.18);
+      color:white;
+      border-radius:13px;
+      padding:15px;
+      font-size:18px;
+      outline:none;
+      margin-top:8px;
+    }
+
+    textarea{
+      min-height:95px;
+      resize:none;
+      font-size:15px;
+    }
+
+    .screen{display:none}
+    .screen.active{display:block}
+
+    .nav{
+      position:fixed;
+      bottom:0;
+      left:0;
+      right:0;
+      background:rgba(3,7,15,.94);
+      backdrop-filter:blur(18px);
+      border-top:1px solid var(--line);
+      max-width:430px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      padding:9px 4px 14px;
+      z-index:20;
+    }
+
+    .nav button{
+      background:transparent;
+      box-shadow:none;
+      padding:7px 0;
+      border-radius:10px;
+      font-size:10px;
+      color:var(--muted);
+      font-weight:700;
+    }
+
+    .nav button.active{
+      color:var(--blue2);
+    }
+
+    .nav .ico{
+      display:block;
+      font-size:20px;
+      margin-bottom:3px;
+    }
+
+    .chartBox{
+      height:280px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    canvas{
+      width:100%;
+      height:100%;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:14px;
+    }
+
+    th,td{
+      padding:13px 4px;
+      border-bottom:1px solid var(--line);
+      text-align:left;
+    }
+
+    th{
+      color:var(--muted);
+      font-size:11px;
+      text-transform:uppercase;
+    }
+
+    td:nth-child(2),td:nth-child(3){
+      text-align:right;
+    }
+
+    .achievement{
+      text-align:center;
+      min-height:140px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:8px;
+    }
+
+    .achievement .icon{
+      font-size:38px;
+    }
+
+    .locked{
+      opacity:.35;
+      filter:grayscale(1);
+    }
+
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.72);
+      z-index:50;
+      display:none;
+      align-items:flex-end;
+      justify-content:center;
+    }
+
+    .modal.active{display:flex}
+
+    .modalCard{
+      width:100%;
+      max-width:430px;
+      background:#071020;
+      border-radius:25px 25px 0 0;
+      padding:22px 16px 30px;
+      border:1px solid var(--line);
+    }
+
+    .title{
+      font-size:24px;
+      font-weight:900;
+      text-align:center;
+      margin-bottom:18px;
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      margin-top:12px;
+    }
+
+    .danger{
+      background:linear-gradient(135deg,#ff3b3b,#b00020);
+      box-shadow:none;
+    }
+
+    .empty{
+      color:var(--muted);
+      text-align:center;
+      padding:30px 10px;
+    }
+
+    .toast{
+      position:fixed;
+      top:18px;
+      left:50%;
+      transform:translateX(-50%);
+      background:#101a2b;
+      border:1px solid var(--line);
+      color:white;
+      padding:12px 18px;
+      border-radius:999px;
+      z-index:99;
+      display:none;
+      box-shadow:0 10px 25px rgba(0,0,0,.35);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="toast" id="toast"></div>
+
+  <div class="app">
+
+    <section id="resumen" class="screen active">
+      <div class="top">
+        <div class="logo"><span>🧰</span> STATS</div>
+        <div class="brand">ELBAULDECHASKY</div>
+        <div class="hello">¡Buenos días, Chasky! 👋</div>
+      </div>
+
+      <div class="card">
+        <div class="label">Suscriptores actuales</div>
+        <div class="big" id="currentSubs">0</div>
+        <div class="sub">Total de suscriptores guardados</div>
+      </div>
+
+      <div class="card">
+        <div class="label">Diferencia respecto a ayer</div>
+        <div class="diff" id="todayDiff">0</div>
+        <div class="sub" id="yesterdayText">Sin dato anterior</div>
+      </div>
+
+      <div class="grid">
+        <div class="card mini">
+          <div class="label">Racha</div>
+          <div class="value">🔥 <span id="streak">0</span></div>
+          <div class="sub green">días subiendo</div>
+        </div>
+
+        <div class="card mini">
+          <div class="label">Récord diario</div>
+          <div class="value">🏆 <span id="record">0</span></div>
+          <div class="sub" id="recordDate">Sin datos</div>
+        </div>
+      </div>
+
+      <button onclick="openModal()">GUARDAR DATO DE HOY ＋</button>
+    </section>
+
+    <section id="grafica" class="screen">
+      <div class="title">Gráfica</div>
+
+      <div class="card chartBox">
+        <canvas id="chart" width="360" height="260"></canvas>
+      </div>
+
+      <div class="grid">
+        <div class="card mini">
+          <div class="label">Últimos 7 días</div>
+          <div class="value green" id="weekGain">0</div>
+          <div class="sub">suscriptores</div>
+        </div>
+
+        <div class="card mini">
+          <div class="label">Promedio diario</div>
+          <div class="value green" id="avgGain">0</div>
+          <div class="sub">subs/día</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="datos" class="screen">
+      <div class="title">Datos guardados</div>
+
+      <div class="card">
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Subs</th>
+              <th>Dif.</th>
+            </tr>
+          </thead>
+          <tbody id="dataTable"></tbody>
+        </table>
+        <div id="emptyData" class="empty">Todavía no hay datos guardados.</div>
+      </div>
+    </section>
+
+    <section id="logros" class="screen">
+      <div class="title">Logros</div>
+
+      <div class="grid">
+        <div class="card achievement" id="ach100">
+          <div class="icon">🚀</div>
+          <b>¡DESPEGUE!</b>
+          <span>Alcanza 100 suscriptores</span>
+        </div>
+
+        <div class="card achievement" id="ach7">
+          <div class="icon">📈</div>
+          <b>EN ASCENSO</b>
+          <span>7 días seguidos subiendo</span>
+        </div>
+
+        <div class="card achievement" id="achRecord">
+          <div class="icon">👑</div>
+          <b>RÉCORD</b>
+          <span>Supera tu récord diario</span>
+        </div>
+
+        <div class="card achievement" id="ach30">
+          <div class="icon">📅</div>
+          <b>CONSTANCIA</b>
+          <span>30 datos guardados</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="ajustes" class="screen">
+      <div class="title">Ajustes</div>
+
+      <div class="card">
+        <div class="label">Canal</div>
+        <b>▶️ ElBauldeChasky</b>
+        <div class="sub">Seguimiento manual diario</div>
+      </div>
+
+      <div class="card">
+        <div class="label">Copia de seguridad</div>
+        <button onclick="exportData()">EXPORTAR DATOS</button>
+        <br><br>
+        <button class="secondary" onclick="document.getElementById('importFile').click()">IMPORTAR DATOS</button>
+        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+      </div>
+
+      <div class="card">
+        <div class="label">Zona peligrosa</div>
+        <button class="danger" onclick="resetData()">BORRAR TODOS LOS DATOS</button>
+      </div>
+
+      <div class="card">
+        <b>STATS ElBauldeChasky</b>
+        <div class="sub">Versión 1.0.0</div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="nav">
+    <button class="active" onclick="showScreen('resumen', this)"><span class="ico">🏠</span>Resumen</button>
+    <button onclick="showScreen('grafica', this)"><span class="ico">📈</span>Gráfica</button>
+    <button onclick="showScreen('datos', this)"><span class="ico">📋</span>Datos</button>
+    <button onclick="showScreen('logros', this)"><span class="ico">🏆</span>Logros</button>
+    <button onclick="showScreen('ajustes', this)"><span class="ico">⚙️</span>Ajustes</button>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="modalCard">
+      <div class="title">Nuevo dato</div>
+
+      <div class="label">Fecha</div>
+      <input type="date" id="dateInput">
+
+      <div class="label" style="margin-top:16px">Suscriptores actuales</div>
+      <input type="number" id="subsInput" inputmode="numeric" placeholder="Ej: 12842">
+
+      <div class="label" style="margin-top:16px">Nota opcional</div>
+      <textarea id="noteInput" placeholder="Ej: El vídeo de cumbia está funcionando muy bien 💪"></textarea>
+
+      <div class="row">
+        <button class="secondary" onclick="closeModal()">CANCELAR</button>
+        <button onclick="saveToday()">GUARDAR</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const STORAGE_KEY = "stats_elbauldechasky_v1";
+  let data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+
+  function saveStorage(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function formatNumber(n){
+    return Number(n || 0).toLocaleString("es-ES");
+  }
+
+  function todayISO(){
+    const d = new Date();
+    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+    return d.toISOString().slice(0,10);
+  }
+
+  function formatDate(iso){
+    const [y,m,d] = iso.split("-");
+    return `${d}/${m}/${y}`;
+  }
+
+  function sortData(){
+    data.sort((a,b) => a.date.localeCompare(b.date));
+  }
+
+  function showToast(msg){
+    const toast = document.getElementById("toast");
+    toast.textContent = msg;
+    toast.style.display = "block";
+    setTimeout(()=> toast.style.display = "none", 2200);
+  }
+
+  function showScreen(id, btn){
+    document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+
+    document.querySelectorAll(".nav button").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    if(id === "grafica") setTimeout(drawChart, 100);
+  }
+
+  function openModal(){
+    document.getElementById("modal").classList.add("active");
+    document.getElementById("dateInput").value = todayISO();
+
+    if(data.length){
+      document.getElementById("subsInput").value = data[data.length - 1].subs;
+    }else{
+      document.getElementById("subsInput").value = "";
+    }
+
+    document.getElementById("noteInput").value = "";
+    setTimeout(()=>document.getElementById("subsInput").focus(), 200);
+  }
+
+  function closeModal(){
+    document.getElementById("modal").classList.remove("active");
+  }
+
+  function saveToday(){
+    const date = document.getElementById("dateInput").value;
+    const subs = Number(document.getElementById("subsInput").value);
+    const note = document.getElementById("noteInput").value.trim();
+
+    if(!date || !subs){
+      showToast("Falta fecha o suscriptores");
+      return;
+    }
+
+    const existing = data.findIndex(item => item.date === date);
+
+    const newItem = { date, subs, note };
+
+    if(existing >= 0){
+      data[existing] = newItem;
+      showToast("Dato actualizado ✅");
+    }else{
+      data.push(newItem);
+      showToast("Dato guardado ✅");
+    }
+
+    sortData();
+    saveStorage();
+    closeModal();
+    render();
+  }
+
+  function getDiff(index){
+    if(index <= 0) return 0;
+    return data[index].subs - data[index - 1].subs;
+  }
+
+  function getStreak(){
+    if(data.length < 2) return 0;
+    let streak = 0;
+
+    for(let i = data.length - 1; i > 0; i--){
+      if(data[i].subs > data[i - 1].subs){
+        streak++;
+      }else{
+        break;
+      }
+    }
+
+    return streak;
+  }
+
+  function getRecord(){
+    let best = { diff:0, date:null };
+
+    for(let i = 1; i < data.length; i++){
+      const diff = getDiff(i);
+      if(diff > best.diff){
+        best = { diff, date:data[i].date };
+      }
+    }
+
+    return best;
+  }
+
+  function renderSummary(){
+    const current = data.length ? data[data.length - 1] : null;
+    const previous = data.length > 1 ? data[data.length - 2] : null;
+
+    document.getElementById("currentSubs").textContent = current ? formatNumber(current.subs) : "0";
+
+    let diff = 0;
+    if(current && previous) diff = current.subs - previous.subs;
+
+    const diffEl = document.getElementById("todayDiff");
+    diffEl.className = "diff";
+    if(diff < 0) diffEl.classList.add("neg");
+    if(diff === 0) diffEl.classList.add("zero");
+    diffEl.textContent = diff > 0 ? `+${formatNumber(diff)}` : formatNumber(diff);
+
+    document.getElementById("yesterdayText").textContent = previous
+      ? `${formatNumber(previous.subs)} ayer`
+      : "Sin dato anterior";
+
+    document.getElementById("streak").textContent = getStreak();
+
+    const record = getRecord();
+    document.getElementById("record").textContent = record.diff > 0 ? `+${formatNumber(record.diff)}` : "0";
+    document.getElementById("recordDate").textContent = record.date ? formatDate(record.date) : "Sin datos";
+  }
+
+  function renderTable(){
+    const tbody = document.getElementById("dataTable");
+    const empty = document.getElementById("emptyData");
+    tbody.innerHTML = "";
+
+    if(!data.length){
+      empty.style.display = "block";
+      return;
+    }
+
+    empty.style.display = "none";
+
+    [...data].reverse().forEach((item) => {
+      const originalIndex = data.findIndex(d => d.date === item.date);
+      const diff = getDiff(originalIndex);
+      const diffText = diff > 0 ? `+${formatNumber(diff)}` : formatNumber(diff);
+      const color = diff > 0 ? "green" : diff < 0 ? "red" : "yellow";
+
+      tbody.innerHTML += `
+        <tr>
+          <td>${formatDate(item.date)}</td>
+          <td>${formatNumber(item.subs)}</td>
+          <td class="${color}">${diffText}</td>
+        </tr>
+      `;
+    });
+  }
+
+  function renderStats(){
+    if(data.length < 2){
+      document.getElementById("weekGain").textContent = "0";
+      document.getElementById("avgGain").textContent = "0";
+      return;
+    }
+
+    const last = data[data.length - 1].subs;
+    const startIndex = Math.max(0, data.length - 7);
+    const firstWeek = data[startIndex].subs;
+    const weekGain = last - firstWeek;
+
+    const totalGain = data[data.length - 1].subs - data[0].subs;
+    const days = data.length - 1;
+    const avg = days > 0 ? totalGain / days : 0;
+
+    document.getElementById("weekGain").textContent =
+      weekGain > 0 ? `+${formatNumber(weekGain)}` : formatNumber(weekGain);
+
+    document.getElementById("avgGain").textContent =
+      avg > 0 ? `+${avg.toFixed(1).replace(".", ",")}` : avg.toFixed(1).replace(".", ",");
+  }
+
+  function renderAchievements(){
+    const current = data.length ? data[data.length - 1].subs : 0;
+    const streak = getStreak();
+    const record = getRecord();
+
+    document.getElementById("ach100").classList.toggle("locked", current < 100);
+    document.getElementById("ach7").classList.toggle("locked", streak < 7);
+    document.getElementById("achRecord").classList.toggle("locked", record.diff <= 0);
+    document.getElementById("ach30").classList.toggle("locked", data.length < 30);
+  }
+
+  function drawChart(){
+    const canvas = document.getElementById("chart");
+    const ctx = canvas.getContext("2d");
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    if(data.length < 2){
+      ctx.fillStyle = "#91a0b8";
+      ctx.font = "16px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("Guarda al menos 2 días para ver la gráfica", canvas.width/2, canvas.height/2);
+      return;
+    }
+
+    const points = data.slice(-14);
+    const values = points.map(p => p.subs);
+    const min = Math.min(...values);
+    const max = Math.max(...values);
+    const range = max - min || 1;
+
+    const padding = 30;
+    const w = canvas.width - padding * 2;
+    const h = canvas.height - padding * 2;
+
+    ctx.strokeStyle = "rgba(255,255,255,.08)";
+    ctx.lineWidth = 1;
+
+    for(let i=0;i<5;i++){
+      const y = padding + (h/4)*i;
+      ctx.beginPath();
+      ctx.moveTo(padding,y);
+      ctx.lineTo(canvas.width-padding,y);
+      ctx.stroke();
+    }
+
+    const coords = values.map((v,i)=>{
+      const x = padding + (w / (values.length - 1)) * i;
+      const y = padding + h - ((v - min) / range) * h;
+      return {x,y,v};
+    });
+
+    const grad = ctx.createLinearGradient(0,0,0,canvas.height);
+    grad.addColorStop(0,"rgba(0,119,255,.45)");
+    grad.addColorStop(1,"rgba(0,119,255,0)");
+
+    ctx.beginPath();
+    coords.forEach((p,i)=>{
+      if(i===0) ctx.moveTo(p.x,p.y);
+      else ctx.lineTo(p.x,p.y);
+    });
+    ctx.lineTo(coords[coords.length-1].x, canvas.height-padding);
+    ctx.lineTo(coords[0].x, canvas.height-padding);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    ctx.beginPath();
+    coords.forEach((p,i)=>{
+      if(i===0) ctx.moveTo(p.x,p.y);
+      else ctx.lineTo(p.x,p.y);
+    });
+    ctx.strokeStyle = "#00a6ff";
+    ctx.lineWidth = 4;
+    ctx.shadowColor = "#0077ff";
+    ctx.shadowBlur = 14;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    coords.forEach(p=>{
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,5,0,Math.PI*2);
+      ctx.fillStyle = "#ffffff";
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,3,0,Math.PI*2);
+      ctx.fillStyle = "#00a6ff";
+      ctx.fill();
+    });
+
+    const last = coords[coords.length-1];
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 14px Arial";
+    ctx.textAlign = "right";
+    ctx.fillText(formatNumber(last.v), canvas.width - 18, 25);
+  }
+
+  function exportData(){
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "stats-elbauldechasky-backup.json";
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast("Datos exportados ✅");
+  }
+
+  function importData(event){
+    const file = event.target.files[0];
+    if(!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e){
+      try{
+        const imported = JSON.parse(e.target.result);
+        if(!Array.isArray(imported)) throw new Error();
+        data = imported;
+        sortData();
+        saveStorage();
+        render();
+        showToast("Datos importados ✅");
+      }catch{
+        showToast("Archivo no válido");
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  function resetData(){
+    if(!confirm("¿Seguro que quieres borrar todos los datos?")) return;
+    data = [];
+    saveStorage();
+    render();
+    showToast("Datos borrados");
+  }
+
+  function render(){
+    sortData();
+    renderSummary();
+    renderTable();
+    renderStats();
+    renderAchievements();
+    drawChart();
+  }
+
+  render();
+</script>
+</body>
+</html>
