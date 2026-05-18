@@ -183,7 +183,7 @@
       max-width:430px;
       margin:0 auto;
       display:grid;
-      grid-template-columns:repeat(5,1fr);
+      grid-template-columns:repeat(6,1fr);
       padding:9px 4px 14px;
       z-index:20;
     }
@@ -193,7 +193,7 @@
       box-shadow:none;
       padding:7px 0;
       border-radius:10px;
-      font-size:10px;
+      font-size:9px;
       color:var(--muted);
       font-weight:700;
     }
@@ -389,6 +389,70 @@
   border-radius:18px;
   font-size:18px;
 }
+
+.money-card{
+  border-color:rgba(32,224,112,.22);
+  box-shadow:0 12px 30px rgba(0,0,0,.28), inset 0 0 28px rgba(32,224,112,.04);
+}
+.money-big{
+  font-size:40px;
+  font-weight:900;
+  line-height:1;
+  color:var(--green);
+  text-shadow:0 0 18px rgba(32,224,112,.22);
+}
+.tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:14px;
+}
+.tab-pill{
+  flex:1;
+  text-align:center;
+  padding:10px 8px;
+  border-radius:12px;
+  background:#0b1322;
+  border:1px solid var(--line);
+  color:var(--muted);
+  font-size:12px;
+  font-weight:800;
+}
+.tab-pill.active{
+  background:linear-gradient(135deg,#07b85f,#128cff);
+  color:white;
+}
+.bar-list{
+  height:135px;
+  display:flex;
+  align-items:flex-end;
+  gap:10px;
+  margin-top:18px;
+  padding-top:10px;
+  border-top:1px solid var(--line);
+}
+.day-bar{
+  flex:1;
+  min-width:0;
+  text-align:center;
+  color:var(--muted);
+  font-size:10px;
+}
+.day-bar i{
+  display:block;
+  width:100%;
+  max-width:24px;
+  margin:0 auto 8px;
+  border-radius:999px 999px 4px 4px;
+  background:linear-gradient(180deg,#20e070,#0b7cff);
+  box-shadow:0 0 16px rgba(32,224,112,.35);
+}
+.note-small{
+  width:100%;
+  align-self:center;
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+}
     .toast{
       position:fixed;
       top:18px;
@@ -462,6 +526,26 @@
         </div>
       </div>
 
+      <div class="card money-card">
+        <div class="label">Monetización - esta semana</div>
+        <div class="money-big" id="summaryWeekRevenue">0,00 €</div>
+        <div class="sub" id="summaryMoneyText">Listo para añadir tu primer euro 💸</div>
+      </div>
+
+      <div class="grid">
+        <div class="card mini money-card">
+          <div class="label">Este mes</div>
+          <div class="value green" id="summaryMonthRevenue">0,00 €</div>
+          <div class="sub">ingresos</div>
+        </div>
+
+        <div class="card mini money-card">
+          <div class="label">Mejor día €</div>
+          <div class="value green" id="summaryBestRevenue">0,00 €</div>
+          <div class="sub" id="summaryBestRevenueDate">Sin datos</div>
+        </div>
+      </div>
+
       <button onclick="openModal()">GUARDAR DATO DE HOY ＋</button>
     </section>
 
@@ -487,6 +571,64 @@
       </div>
     </section>
 
+
+    <section id="monetizacion" class="screen">
+      <div class="title">Monetización</div>
+
+      <div class="tabs">
+        <div class="tab-pill active">7 días</div>
+        <div class="tab-pill">Mes</div>
+        <div class="tab-pill">Histórico</div>
+      </div>
+
+      <div class="card money-card">
+        <div class="label">Ingresos esta semana</div>
+        <div class="money-big" id="revenueWeek">0,00 €</div>
+        <div class="sub" id="revenueWeekCompare">Empieza añadiendo tu primer ingreso</div>
+        <div class="bar-list" id="revenueBars"></div>
+      </div>
+
+      <div class="grid">
+        <div class="card mini money-card">
+          <div class="label">Ingresos este mes</div>
+          <div class="value green" id="revenueMonth">0,00 €</div>
+          <div class="sub">total mensual</div>
+        </div>
+
+        <div class="card mini money-card">
+          <div class="label">Mejor día</div>
+          <div class="value green" id="bestRevenue">0,00 €</div>
+          <div class="sub" id="bestRevenueDate">Sin datos</div>
+        </div>
+
+        <div class="card mini">
+          <div class="label">RPM promedio</div>
+          <div class="value blue" id="avgRpm">0,00 €</div>
+          <div class="sub">manual / calculado</div>
+        </div>
+
+        <div class="card mini">
+          <div class="label">Total histórico</div>
+          <div class="value green" id="revenueTotal">0,00 €</div>
+          <div class="sub">desde inicio</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="label">Últimos ingresos guardados</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>€</th>
+              <th>RPM</th>
+            </tr>
+          </thead>
+          <tbody id="revenueTable"></tbody>
+        </table>
+        <div id="emptyRevenue" class="empty">Todavía no hay ingresos guardados.</div>
+      </div>
+    </section>
     <section id="datos" class="screen">
       <div class="title">Datos guardados</div>
 
@@ -568,6 +710,7 @@
   <div class="nav">
     <button class="active" onclick="showScreen('resumen', this)"><span class="ico">🏠</span>Resumen</button>
     <button onclick="showScreen('grafica', this)"><span class="ico">📈</span>Gráfica</button>
+    <button onclick="showScreen('monetizacion', this)"><span class="ico">💸</span>Money</button>
     <button onclick="showScreen('datos', this)"><span class="ico">📋</span>Datos</button>
     <button onclick="showScreen('logros', this)"><span class="ico">🏆</span>Logros</button>
     <button onclick="showScreen('ajustes', this)"><span class="ico">⚙️</span>Ajustes</button>
@@ -582,6 +725,18 @@
 
       <div class="label" style="margin-top:16px">Suscriptores actuales</div>
       <input type="number" id="subsInput" inputmode="numeric" placeholder="Ej: 12842">
+
+      <div class="label" style="margin-top:16px">Ingresos del día (€)</div>
+      <input type="number" id="revenueInput" inputmode="decimal" step="0.01" placeholder="Ej: 0.35">
+
+      <div class="label" style="margin-top:16px">Visitas del día (opcional)</div>
+      <input type="number" id="viewsInput" inputmode="numeric" placeholder="Ej: 3200">
+
+      <div class="label" style="margin-top:16px">RPM (opcional)</div>
+      <input type="number" id="rpmInput" inputmode="decimal" step="0.01" placeholder="Ej: 2.36">
+
+      <div class="label" style="margin-top:16px">Vídeo que más ingresó (opcional)</div>
+      <input type="text" id="topVideoInput" placeholder="Ej: Cumbia instrumental nueva">
 
       <div class="label" style="margin-top:16px">Nota opcional</div>
       <textarea id="noteInput" placeholder="Ej: El vídeo de cumbia está funcionando muy bien 💪"></textarea>
@@ -626,6 +781,34 @@
     toast.style.display = "block";
     setTimeout(()=> toast.style.display = "none", 2200);
   }
+
+  function setValue(id, value){
+    const el = document.getElementById(id);
+    if(el) el.value = value;
+  }
+
+  function getNumberInput(id){
+    const el = document.getElementById(id);
+    if(!el) return 0;
+    return Number(String(el.value || "0").replace(",", ".")) || 0;
+  }
+
+  function formatMoney(n){
+    return (Number(n || 0)).toLocaleString("es-ES", {
+      minimumFractionDigits:2,
+      maximumFractionDigits:2
+    }) + " €";
+  }
+
+  function parseDateLocal(iso){
+    const [y,m,d] = iso.split("-").map(Number);
+    return new Date(y, m - 1, d);
+  }
+
+  function isSameMonth(iso, refDate){
+    const d = parseDateLocal(iso);
+    return d.getFullYear() === refDate.getFullYear() && d.getMonth() === refDate.getMonth();
+  }
 function entrarApp(){
   document.getElementById("inicio").style.display = "none";
   document.getElementById("resumen").classList.add("active");
@@ -639,6 +822,7 @@ function entrarApp(){
     btn.classList.add("active");
 
     if(id === "grafica") setTimeout(drawChart, 100);
+    if(id === "monetizacion") setTimeout(drawRevenueBars, 100);
   }
 
   function openModal(){
@@ -651,6 +835,10 @@ function entrarApp(){
       document.getElementById("subsInput").value = "";
     }
 
+    setValue("revenueInput", "");
+    setValue("viewsInput", "");
+    setValue("rpmInput", "");
+    setValue("topVideoInput", "");
     document.getElementById("noteInput").value = "";
     setTimeout(()=>document.getElementById("subsInput").focus(), 200);
   }
@@ -662,6 +850,10 @@ function entrarApp(){
   function saveToday(){
     const date = document.getElementById("dateInput").value;
     const subs = Number(document.getElementById("subsInput").value);
+    const revenue = getNumberInput("revenueInput");
+    const views = getNumberInput("viewsInput");
+    const rpmManual = getNumberInput("rpmInput");
+    const topVideo = document.getElementById("topVideoInput") ? document.getElementById("topVideoInput").value.trim() : "";
     const note = document.getElementById("noteInput").value.trim();
 
     if(!date || !subs){
@@ -671,7 +863,8 @@ function entrarApp(){
 
     const existing = data.findIndex(item => item.date === date);
 
-    const newItem = { date, subs, note };
+    const rpm = rpmManual || (views > 0 && revenue > 0 ? (revenue / views) * 1000 : 0);
+    const newItem = { date, subs, revenue, views, rpm, topVideo, note };
 
     if(existing >= 0){
       data[existing] = newItem;
@@ -813,6 +1006,123 @@ function entrarApp(){
     document.getElementById("ach7").classList.toggle("locked", streak < 7);
     document.getElementById("achRecord").classList.toggle("locked", record.diff <= 0);
     document.getElementById("ach30").classList.toggle("locked", data.length < 30);
+  }
+
+
+  function getRevenueStats(){
+    const today = new Date();
+    const last7 = data.slice(-7);
+    const weekRevenue = last7.reduce((sum,item)=>sum + Number(item.revenue || 0), 0);
+    const monthRevenue = data
+      .filter(item => isSameMonth(item.date, today))
+      .reduce((sum,item)=>sum + Number(item.revenue || 0), 0);
+    const totalRevenue = data.reduce((sum,item)=>sum + Number(item.revenue || 0), 0);
+
+    let best = { revenue:0, date:null };
+    data.forEach(item=>{
+      const revenue = Number(item.revenue || 0);
+      if(revenue > best.revenue){
+        best = { revenue, date:item.date };
+      }
+    });
+
+    const rpmValues = data.map(item => Number(item.rpm || 0)).filter(v => v > 0);
+    const avgRpm = rpmValues.length
+      ? rpmValues.reduce((sum,v)=>sum+v,0) / rpmValues.length
+      : 0;
+
+    return { last7, weekRevenue, monthRevenue, totalRevenue, best, avgRpm };
+  }
+
+  function renderMoney(){
+    const stats = getRevenueStats();
+
+    const ids = ["summaryWeekRevenue","summaryMonthRevenue","summaryBestRevenue","revenueWeek","revenueMonth","bestRevenue","avgRpm","revenueTotal"];
+    if(!document.getElementById("summaryWeekRevenue")) return;
+
+    document.getElementById("summaryWeekRevenue").textContent = formatMoney(stats.weekRevenue);
+    document.getElementById("summaryMonthRevenue").textContent = formatMoney(stats.monthRevenue);
+    document.getElementById("summaryBestRevenue").textContent = formatMoney(stats.best.revenue);
+    document.getElementById("summaryBestRevenueDate").textContent = stats.best.date ? formatDate(stats.best.date) : "Sin datos";
+    document.getElementById("summaryMoneyText").textContent = stats.weekRevenue > 0
+      ? "Ingresos registrados esta semana"
+      : "Listo para añadir tu primer euro 💸";
+
+    document.getElementById("revenueWeek").textContent = formatMoney(stats.weekRevenue);
+    document.getElementById("revenueMonth").textContent = formatMoney(stats.monthRevenue);
+    document.getElementById("bestRevenue").textContent = formatMoney(stats.best.revenue);
+    document.getElementById("bestRevenueDate").textContent = stats.best.date ? formatDate(stats.best.date) : "Sin datos";
+    document.getElementById("avgRpm").textContent = formatMoney(stats.avgRpm);
+    document.getElementById("revenueTotal").textContent = formatMoney(stats.totalRevenue);
+
+    const previous7 = data.slice(-14, -7);
+    const previousWeek = previous7.reduce((sum,item)=>sum + Number(item.revenue || 0), 0);
+    let compareText = "Empieza añadiendo tu primer ingreso";
+    if(previousWeek > 0){
+      const pct = ((stats.weekRevenue - previousWeek) / previousWeek) * 100;
+      compareText = `${pct >= 0 ? "↗" : "↘"} ${pct.toFixed(1).replace(".", ",")}% vs semana anterior`;
+    }else if(stats.weekRevenue > 0){
+      compareText = "Primeros ingresos guardados 🔥";
+    }
+    document.getElementById("revenueWeekCompare").textContent = compareText;
+
+    renderRevenueTable();
+    drawRevenueBars();
+  }
+
+  function renderRevenueTable(){
+    const tbody = document.getElementById("revenueTable");
+    const empty = document.getElementById("emptyRevenue");
+    if(!tbody || !empty) return;
+
+    const revenueRows = data.filter(item => Number(item.revenue || 0) > 0).slice(-10).reverse();
+    tbody.innerHTML = "";
+
+    if(!revenueRows.length){
+      empty.style.display = "block";
+      return;
+    }
+
+    empty.style.display = "none";
+
+    revenueRows.forEach(item=>{
+      tbody.innerHTML += `
+        <tr>
+          <td>${formatDate(item.date)}</td>
+          <td class="green">${formatMoney(item.revenue)}</td>
+          <td>${item.rpm ? formatMoney(item.rpm) : "-"}</td>
+        </tr>
+      `;
+    });
+  }
+
+  function drawRevenueBars(){
+    const box = document.getElementById("revenueBars");
+    if(!box) return;
+
+    const last7 = data.slice(-7);
+    const max = Math.max(1, ...last7.map(item => Number(item.revenue || 0)));
+    const labels = ["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"];
+    box.innerHTML = "";
+
+    if(!last7.length){
+      box.innerHTML = '<div class="note-small">Guarda ingresos y aquí verás barras semanales.</div>';
+      return;
+    }
+
+    last7.forEach(item=>{
+      const date = parseDateLocal(item.date);
+      const day = labels[date.getDay() === 0 ? 6 : date.getDay() - 1];
+      const revenue = Number(item.revenue || 0);
+      const height = Math.max(6, Math.round((revenue / max) * 96));
+
+      box.innerHTML += `
+        <div class="day-bar" title="${formatMoney(revenue)}">
+          <i style="height:${height}px"></i>
+          <span>${day}</span>
+        </div>
+      `;
+    });
   }
 
   function drawChart(){
@@ -979,6 +1289,7 @@ function entrarApp(){
     renderSummary();
     renderTable();
     renderStats();
+    renderMoney();
     renderAchievements();
     drawChart();
   }
