@@ -142,18 +142,16 @@
       if(!window.Tesseract){log.textContent='OCR no disponible. Puedes rellenar los datos a mano.'; return;}
       try{
         const result=await Tesseract.recognize(image,'spa+eng',{logger:m=>{if(m.status)log.textContent='OCR: '+m.status+(m.progress?` ${Math.round(m.progress*100)}%`:'')}});
-        const text=result.data.text||''; log.textContent='Texto detectado:
-'+text.slice(0,900);
+        const text=result.data.text||''; log.textContent='Texto detectado:\n'+text.slice(0,900);
         if(type==='subs') fillSubsFromText(text); else fillStudioFromText(text);
         updatePreview(); showToast('Captura leída. Revisa y confirma ✅');
       }catch(e){log.textContent='No pude leer bien la captura. Rellena/corrige a mano.'; showToast('OCR falló, puedes escribir manualmente');}
     }
 
     function fillSubsFromText(text){
-      const clean=text.replace(/
-/g,' ').replace(/\s+/g,' ');
+      const clean=text.replace(/\n/g,' ').replace(/\s+/g,' ');
       const candidates=[];
-      const re=/(^|[^+\d])([0-9]{1,3}(?:[\.,][0-9]{3})+|[0-9]{3,9})/g;
+      const re=/(^|[^+\d])([0-9]{1,3}(?:[\.,][0-9]{3})+|[0-9]{3,9})\b/g;
       let m;
       while((m=re.exec(clean))!==null){
         const n=Number(m[2].replace(/[\.,]/g,''));
@@ -163,8 +161,7 @@
     }
 
     function fillStudioFromText(text){
-      const clean=text.replace(/
-/g,' ').replace(/\s+/g,' ');
+      const clean=text.replace(/\n/g,' ').replace(/\s+/g,' ');
       const euros=[...clean.matchAll(/(\d{1,6}[\.,]\d{1,2})\s*€/g)].map(m=>parseNum(m[1]));
       if(euros.length)document.getElementById('moneyInput').value=fmtMoney(Math.max(...euros));
       const kNums=[...clean.matchAll(/(\d{1,4}[\.,]?\d?)\s*K/gi)].map(m=>parseNum(m[1]));
