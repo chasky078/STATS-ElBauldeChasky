@@ -43,37 +43,17 @@
     </section>
 
     <section id="dashboard" class="screen">
-      <div class="header"><div class="brandBlock"><img src="logo.png" class="miniLogo" onerror="this.style.display='none'"><div><div class="brandTitle">Dashboard</div><div class="brandSub">YouTube Studio tracker</div></div></div><div class="pill">HOY</div></div>
-      <div class="hero">
-        <div class="card cardGlow">
-          <div class="label">Ingresos del día calculados</div>
-          <div class="metricLine"><div class="big money" id="dailyMoney">0,00 €</div><div class="delta green" id="moneyDeltaBadge">+0</div></div>
-          <div class="sub">Se calcula restando el total acumulado de ayer al total de hoy.</div>
-        </div>
-        <div class="card mini"><div class="label">Subs hoy</div><div class="value green" id="dailySubs">+0</div><div class="sub">calculado</div></div>
-        <div class="card mini"><div class="label">Total ingresos</div><div class="value money" id="totalMoney">0,00 €</div><div class="sub">YouTube Studio</div></div>
-      </div>
-      <div class="grid">
-        <div class="card mini"><div class="label">Subs totales</div><div class="value blue" id="totalSubs">0</div></div>
-        <div class="card mini"><div class="label">Visitas</div><div class="value purple" id="totalViews">0K</div></div>
-        <div class="card mini"><div class="label">Horas</div><div class="value yellow" id="totalHours">0K</div></div>
-        <div class="card mini"><div class="label">Mejor día €</div><div class="value money" id="bestMoney">0,00 €</div></div>
-      </div>
-      <button class="greenBtn" onclick="showScreen('captura')">SUBIR CAPTURA DE HOY</button>
-    </section>
-
-    <section id="captura" class="screen">
-      <div class="header"><div class="brandBlock"><img src="logo.png" class="miniLogo" onerror="this.style.display='none'"><div><div class="brandTitle">Subir captura</div><div class="brandSub">Detectar + confirmar</div></div></div><div class="badge">OCR BETA</div></div>
-      <div class="uploadBox" onclick="document.getElementById('imageInput').click()"><div class="uploadIcon">📸</div><b>Subir captura de YouTube Studio</b><div class="sub">Ideal: la captura limpia con subs, ingresos, visitas y horas.</div><input class="fileInput" type="file" id="imageInput" accept="image/*" onchange="handleImage(event)"><img id="preview" class="preview"></div>
+      <div class="header"><div class="brandBlock"><img src="logo.png" class="miniLogo" onerror="this.style.display='none'"><div><div class="brandTitle">Subir capturas</div><div class="brandSub">Total subs + ingresos acumulados</div></div></div><div class="badge">OCR BETA</div></div>
+      <div class="uploadBox" onclick="document.getElementById('subsImageInput').click()"><div class="uploadIcon">👥</div><b>1) Captura TOTAL suscriptores</b><div class="sub">Usa una captura donde salga el número total real del canal, no el +304 de últimos 28 días.</div><input class="fileInput" type="file" id="subsImageInput" accept="image/*" onchange="handleImage(event,'subs')"><img id="subsPreview" class="preview"></div>
+      <div class="uploadBox" onclick="document.getElementById('studioImageInput').click()"><div class="uploadIcon">💸</div><b>2) Captura YouTube Studio</b><div class="sub">Para detectar ingresos acumulados, visualizaciones y horas.</div><input class="fileInput" type="file" id="studioImageInput" accept="image/*" onchange="handleImage(event,'studio')"><img id="studioPreview" class="preview"></div>
       <div class="card">
         <div class="label">Fecha</div><input type="date" id="dateInput">
-        <div class="twoInputs"><div><div class="label" style="margin-top:14px">Subs totales</div><input type="number" id="subsInput" inputmode="numeric" placeholder="Ej: 2432"></div><div><div class="label" style="margin-top:14px">Ingresos totales</div><input type="text" id="moneyInput" inputmode="decimal" placeholder="Ej: 24.22"></div></div>
+        <div class="twoInputs"><div><div class="label" style="margin-top:14px">TOTAL suscriptores canal</div><input type="number" id="subsInput" inputmode="numeric" placeholder="Ej: 2432"></div><div><div class="label" style="margin-top:14px">Ingresos acumulados</div><input type="text" id="moneyInput" inputmode="decimal" placeholder="Ej: 24.22"></div></div>
         <div class="twoInputs"><div><div class="label" style="margin-top:14px">Visualizaciones</div><input type="text" id="viewsInput" inputmode="decimal" placeholder="Ej: 100.7"></div><div><div class="label" style="margin-top:14px">Horas</div><input type="text" id="hoursInput" inputmode="decimal" placeholder="Ej: 1.3"></div></div>
-        <div class="hint">Visualizaciones y horas: escribe 1.3 y la app lo guarda/muestra como 1.3K. Ingresos: escribe 24.22 y se mostrará 24,22 €.</div>
+        <div class="hint">La app calcula: diferencia de subs de un día a otro e ingresos del día = total acumulado de hoy - total acumulado de ayer.</div>
         <div id="calcPreview" class="resultBox"></div><div id="ocrLog" class="ocrLog"></div>
         <div class="row"><button class="secondary" onclick="clearForm()">LIMPIAR</button><button class="greenBtn" onclick="saveEntry()">GUARDAR DÍA</button></div>
-      </div>
-    </section>
+      </div>    </section>
 
     <section id="graficas" class="screen">
       <div class="header"><div><div class="brandTitle">Gráficas</div><div class="brandSub">Evolución diaria</div></div></div>
@@ -90,7 +70,7 @@
       <div class="header"><div><div class="brandTitle">Ajustes</div><div class="brandSub">Copia y seguridad</div></div></div>
       <div class="card"><div class="label">Copia de seguridad</div><button onclick="exportData()">EXPORTAR DATOS</button><br><br><button class="secondary" onclick="document.getElementById('importFile').click()">IMPORTAR DATOS</button><input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)"></div>
       <div class="card"><div class="label">Zona peligrosa</div><button class="danger" onclick="resetData()">BORRAR TODO</button></div>
-      <div class="card"><b>STATS ElBauldeChasky</b><div class="sub">Versión captura + totales acumulados</div></div>
+      <div class="card"><b>STATS ElBauldeChasky</b><div class="sub">Versión 2 capturas + cálculo diario</div></div>
     </section>
   </div>
 
@@ -108,7 +88,8 @@
   <script>
     const STORAGE_KEY='ebc_youtube_tracker_full_v1';
     let entries=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
-    let currentImageData='';
+    let currentSubsImageData='';
+    let currentStudioImageData='';
 
     function persist(){localStorage.setItem(STORAGE_KEY,JSON.stringify(entries));}
     function todayISO(){const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
@@ -139,39 +120,68 @@
       box.innerHTML=`Calculado para este día:<br><b>Subs día:</b> ${dSubs>=0?'+':''}${fmtInt(dSubs)}<br><b>Ingresos día:</b> ${dMoney>=0?'+':''}${fmtMoney(dMoney)}`;
     }
 
-    function handleImage(ev){
+    function handleImage(ev,type){
       const file=ev.target.files[0]; if(!file)return; const reader=new FileReader();
-      reader.onload=()=>{currentImageData=reader.result; const img=document.getElementById('preview'); img.src=currentImageData; img.style.display='block'; runOCR(currentImageData);};
+      reader.onload=()=>{
+        const dataUrl=reader.result;
+        if(type==='subs'){
+          currentSubsImageData=dataUrl;
+          const img=document.getElementById('subsPreview'); img.src=dataUrl; img.style.display='block';
+        }else{
+          currentStudioImageData=dataUrl;
+          const img=document.getElementById('studioPreview'); img.src=dataUrl; img.style.display='block';
+        }
+        runOCR(dataUrl,type);
+      };
       reader.readAsDataURL(file);
     }
 
-    async function runOCR(image){
-      const log=document.getElementById('ocrLog'); log.style.display='block'; log.textContent='Leyendo captura...';
+    async function runOCR(image,type){
+      const log=document.getElementById('ocrLog'); log.style.display='block';
+      log.textContent= type==='subs' ? 'Leyendo captura de suscriptores...' : 'Leyendo captura de YouTube Studio...';
       if(!window.Tesseract){log.textContent='OCR no disponible. Puedes rellenar los datos a mano.'; return;}
       try{
         const result=await Tesseract.recognize(image,'spa+eng',{logger:m=>{if(m.status)log.textContent='OCR: '+m.status+(m.progress?` ${Math.round(m.progress*100)}%`:'')}});
-        const text=result.data.text||''; log.textContent='Texto detectado:\n'+text.slice(0,900);
-        fillFromText(text); updatePreview(); showToast('Captura leída. Revisa y confirma ✅');
+        const text=result.data.text||''; log.textContent='Texto detectado:
+'+text.slice(0,900);
+        if(type==='subs') fillSubsFromText(text); else fillStudioFromText(text);
+        updatePreview(); showToast('Captura leída. Revisa y confirma ✅');
       }catch(e){log.textContent='No pude leer bien la captura. Rellena/corrige a mano.'; showToast('OCR falló, puedes escribir manualmente');}
     }
 
-    function fillFromText(text){
-      const clean=text.replace(/\n/g,' ').replace(/\s+/g,' ');
+    function fillSubsFromText(text){
+      const clean=text.replace(/
+/g,' ').replace(/\s+/g,' ');
+      const candidates=[];
+      const re=/(^|[^+\d])([0-9]{1,3}(?:[\.,][0-9]{3})+|[0-9]{3,9})/g;
+      let m;
+      while((m=re.exec(clean))!==null){
+        const n=Number(m[2].replace(/[\.,]/g,''));
+        if(n>10 && n<100000000) candidates.push(n);
+      }
+      if(candidates.length) document.getElementById('subsInput').value=Math.max(...candidates);
+    }
+
+    function fillStudioFromText(text){
+      const clean=text.replace(/
+/g,' ').replace(/\s+/g,' ');
       const euros=[...clean.matchAll(/(\d{1,6}[\.,]\d{1,2})\s*€/g)].map(m=>parseNum(m[1]));
       if(euros.length)document.getElementById('moneyInput').value=fmtMoney(Math.max(...euros));
       const kNums=[...clean.matchAll(/(\d{1,4}[\.,]?\d?)\s*K/gi)].map(m=>parseNum(m[1]));
-      if(kNums.length){document.getElementById('viewsInput').value=String(kNums[0]).replace('.', '.')+'K'; if(kNums[1])document.getElementById('hoursInput').value=String(kNums[1]).replace('.', '.')+'K';}
-      const allNums=[...clean.matchAll(/\b\d{3,7}\b/g)].map(m=>Number(m[0])).filter(n=>n>50);
-      if(allNums.length)document.getElementById('subsInput').value=Math.max(...allNums.filter(n=>n<10000000));
+      if(kNums.length){
+        document.getElementById('viewsInput').value=String(kNums[0]).replace('.', '.')+'K';
+        if(kNums[1])document.getElementById('hoursInput').value=String(kNums[1]).replace('.', '.')+'K';
+      }
+      // Aquí NO rellenamos suscriptores porque YouTube Studio puede mostrar +304 y eso NO es el total del canal.
     }
 
     function saveEntry(){
       const date=document.getElementById('dateInput').value||todayISO(); const subs=parseNum(document.getElementById('subsInput').value); const money=parseNum(document.getElementById('moneyInput').value); const views=parseKValue(document.getElementById('viewsInput').value); const hours=parseKValue(document.getElementById('hoursInput').value);
       if(!date||!subs){showToast('Falta fecha o suscriptores');return;}
-      const item={id:Date.now(),date,subs,money,views,hours,img:currentImageData||''}; const i=entries.findIndex(e=>e.date===date); if(i>=0){item.id=entries[i].id; if(!item.img)item.img=entries[i].img||''; entries[i]=item;showToast('Día actualizado ✅')} else {entries.push(item);showToast('Día guardado ✅')}
+      const item={id:Date.now(),date,subs,money,views,hours,subsImg:currentSubsImageData||'',studioImg:currentStudioImageData||''}; const i=entries.findIndex(e=>e.date===date); if(i>=0){item.id=entries[i].id; if(!item.subsImg)item.subsImg=entries[i].subsImg||''; if(!item.studioImg)item.studioImg=entries[i].studioImg||''; entries[i]=item;showToast('Día actualizado ✅')} else {entries.push(item);showToast('Día guardado ✅')}
       sortEntries(); persist(); clearForm(false); showScreen('dashboard');
     }
-    function clearForm(clearImg=true){document.getElementById('dateInput').value=todayISO();['subsInput','moneyInput','viewsInput','hoursInput'].forEach(id=>document.getElementById(id).value='');document.getElementById('calcPreview').style.display='none';document.getElementById('ocrLog').style.display='none'; if(clearImg){currentImageData='';document.getElementById('preview').style.display='none';document.getElementById('imageInput').value='';}}
+    function clearForm(clearImg=true){document.getElementById('dateInput').value=todayISO();['subsInput','moneyInput','viewsInput','hoursInput'].forEach(id=>document.getElementById(id).value='');document.getElementById('calcPreview').style.display='none';document.getElementById('ocrLog').style.display='none'; if(clearImg){currentSubsImageData='';currentStudioImageData='';document.getElementById('subsPreview').style.display='none';document.getElementById('studioPreview').style.display='none';document.getElementById('subsImageInput').value='';document.getElementById('studioImageInput').value='';}}
 
     function render(){sortEntries();renderDashboard();renderHistory();}
     function renderDashboard(){
