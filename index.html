@@ -6,46 +6,492 @@
 <title>STATS ElBauldeChasky</title>
 <meta name="theme-color" content="#050914" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="STATS EBC" />
 <style>
-:root{--bg:#050914;--card:#0d1424;--blue:#0077ff;--blue2:#00a6ff;--green:#20e070;--red:#ff3b3b;--yellow:#ffc83d;--text:#f4f7ff;--muted:#91a0b8;--line:rgba(255,255,255,.10)}
-*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--text);min-height:100vh;background:radial-gradient(circle at top,rgba(0,119,255,.24),transparent 34%),linear-gradient(180deg,#02050b,#071020 60%,#02050b)}
-.app{max-width:430px;margin:0 auto;min-height:100vh;padding:20px 15px 92px}.screen{display:none}.screen.active{display:block}.card{background:linear-gradient(145deg,rgba(17,27,46,.96),rgba(8,14,27,.96));border:1px solid var(--line);border-radius:20px;padding:17px;margin-bottom:14px;box-shadow:0 14px 32px rgba(0,0,0,.32)}
-.top{text-align:center;margin:10px 0 22px}.logo{display:flex;justify-content:center;align-items:center;gap:10px;font-size:32px;font-weight:950;font-style:italic;letter-spacing:1px;text-shadow:0 0 18px rgba(0,119,255,.75)}.brand{color:var(--blue2);font-weight:850;font-size:14px;margin-top:-3px}.hello{margin-top:18px;color:#fff;font-size:16px}.label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}.big{font-size:43px;font-weight:950;line-height:1}.value{font-size:25px;font-weight:950}.sub{color:var(--muted);font-size:13px;margin-top:7px;line-height:1.35}.green{color:var(--green)}.red{color:var(--red)}.yellow{color:var(--yellow)}.blue{color:var(--blue2)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}button{width:100%;border:0;border-radius:15px;padding:15px;color:white;font-weight:900;font-size:14px;background:linear-gradient(135deg,#0077ff,#005be0);box-shadow:0 0 24px rgba(0,119,255,.35);cursor:pointer}button.secondary{background:#111b2e;box-shadow:none;border:1px solid var(--line)}button.danger{background:linear-gradient(135deg,#ff3b3b,#aa001e);box-shadow:none}button.good{background:linear-gradient(135deg,#20e070,#009f4c);box-shadow:0 0 22px rgba(32,224,112,.25)}
-input,select,textarea{width:100%;background:#070d18;border:1px solid rgba(255,255,255,.18);color:white;border-radius:14px;padding:14px;font-size:17px;outline:none;margin-top:7px}textarea{min-height:70px;resize:none;font-size:14px}.row{display:flex;gap:10px;margin-top:12px}.row>*{flex:1}
-.nav{position:fixed;bottom:0;left:0;right:0;max-width:430px;margin:0 auto;z-index:20;background:rgba(3,7,15,.94);backdrop-filter:blur(18px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:8px 4px 13px}.nav button{background:transparent;box-shadow:none;padding:7px 0;border-radius:10px;font-size:10px;color:var(--muted)}.nav button.active{color:var(--blue2)}.ico{display:block;font-size:20px;margin-bottom:2px}.title{text-align:center;font-size:24px;font-weight:950;margin:10px 0 18px}.chartBox{height:260px;position:relative;overflow:hidden}canvas{width:100%;height:100%}
-table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:11px 4px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--muted);font-size:10px;text-transform:uppercase}td:nth-child(n+2),th:nth-child(n+2){text-align:right}.empty{text-align:center;color:var(--muted);padding:28px 8px}
-.inicio-screen{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;min-height:100vh;z-index:100;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:30px;background:radial-gradient(circle at top,rgba(255,0,170,.16),transparent 34%),linear-gradient(180deg,#03162d,#02050b 70%)}.intro-logo-container{position:relative;width:240px;height:240px;display:flex;justify-content:center;align-items:center;margin:0 auto 30px}.intro-logo{width:190px;height:190px;object-fit:cover;border-radius:50%;z-index:2;box-shadow:0 0 40px rgba(255,0,140,.35),0 0 80px rgba(255,120,0,.25);background:#111}.loader-ring{position:absolute;width:240px;height:240px;border-radius:50%;border:5px solid rgba(255,255,255,.08);border-top:5px solid #ff00aa;border-right:5px solid #ff7b00;animation:spin 3s linear infinite;box-shadow:0 0 30px rgba(255,0,140,.3)}@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}.intro-title{font-size:56px;margin:0;font-weight:950;font-style:italic;letter-spacing:2px;text-shadow:0 0 20px rgba(255,255,255,.25)}.intro-subtitle{color:#00a6ff;font-size:20px;font-weight:850;margin-top:-8px;margin-bottom:42px}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:60;display:none;align-items:flex-end;justify-content:center}.modal.active{display:flex}.modalCard{width:100%;max-width:430px;max-height:92vh;overflow:auto;background:#071020;border-radius:25px 25px 0 0;padding:22px 16px 30px;border:1px solid var(--line)}.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%);background:#101a2b;border:1px solid var(--line);padding:12px 18px;border-radius:999px;z-index:999;display:none;box-shadow:0 10px 25px rgba(0,0,0,.35)}
+:root{
+  --bg:#050914;--card:#0d1424;--card2:#111b2e;--blue:#0077ff;--blue2:#00a6ff;
+  --green:#20e070;--red:#ff4b5c;--yellow:#ffc83d;--text:#f4f7ff;--muted:#91a0b8;
+  --line:rgba(255,255,255,.10);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:radial-gradient(circle at top,rgba(0,119,255,.22),transparent 35%),linear-gradient(180deg,#02050b,#071020 60%,#02050b);
+  color:var(--text);min-height:100vh;
+}
+.app{max-width:430px;margin:0 auto;min-height:100vh;padding:22px 16px 92px}
+.top{text-align:center;margin:14px 0 24px}
+.logo{display:flex;justify-content:center;align-items:center;gap:10px;font-weight:900;font-size:34px;font-style:italic;letter-spacing:1px;text-shadow:0 0 18px rgba(0,119,255,.7)}
+.brand{color:#00a6ff;font-weight:800;font-size:15px;margin-top:-4px}
+h1,h2,p{margin:0}
+.card{background:linear-gradient(145deg,rgba(17,27,46,.96),rgba(9,15,28,.96));border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:0 12px 30px rgba(0,0,0,.28)}
+.label{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;font-weight:800}
+.big{font-size:48px;font-weight:950;line-height:1}
+.sub{color:var(--muted);margin-top:8px;font-size:14px;font-weight:700}
+.green{color:var(--green)}.red{color:var(--red)}.yellow{color:var(--yellow)}.blue{color:var(--blue2)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mini .value{font-size:27px;font-weight:950}
+button{width:100%;border:0;border-radius:16px;padding:16px;color:white;font-weight:950;font-size:15px;background:linear-gradient(135deg,#0077ff,#005be0);box-shadow:0 0 24px rgba(0,119,255,.35);cursor:pointer}
+button.secondary{background:#111b2e;box-shadow:none;border:1px solid var(--line)}
+button.danger{background:linear-gradient(135deg,#ff3b3b,#b00020);box-shadow:none}
+input,select,textarea{width:100%;background:#070d18;border:1px solid rgba(255,255,255,.18);color:white;border-radius:13px;padding:14px;font-size:17px;outline:none;margin-top:8px}
+textarea{min-height:80px;resize:none;font-size:15px}
+.screen{display:none}.screen.active{display:block}
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(3,7,15,.94);backdrop-filter:blur(18px);border-top:1px solid var(--line);max-width:430px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr);padding:8px 4px 14px;z-index:20}
+.nav button{background:transparent;box-shadow:none;padding:7px 0;border-radius:10px;font-size:10px;color:var(--muted);font-weight:800}
+.nav button.active{color:var(--blue2)}
+.nav .ico{display:block;font-size:20px;margin-bottom:3px}
+.tableWrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:520px}
+th,td{padding:12px 6px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{color:var(--muted);font-size:11px;text-transform:uppercase}
+td.num,th.num{text-align:right}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:50;display:none;align-items:flex-end;justify-content:center}
+.modal.active{display:flex}
+.modalCard{width:100%;max-width:430px;background:#071020;border-radius:25px 25px 0 0;padding:22px 16px 30px;border:1px solid var(--line);max-height:92vh;overflow:auto}
+.title{font-size:24px;font-weight:950;text-align:center;margin-bottom:18px}
+.row{display:flex;gap:10px;margin-top:12px}
+.chartBox{height:230px;position:relative;overflow:hidden}
+canvas{width:100%;height:100%}
+.inicio-screen{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;min-height:100vh;z-index:100;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:30px;background:radial-gradient(circle at top,rgba(255,0,170,.16),transparent 34%),linear-gradient(180deg,#03162d,#02050b 70%)}
+.intro-logo-container{position:relative;width:240px;height:240px;display:flex;justify-content:center;align-items:center;margin:0 auto 30px auto}
+.intro-logo{width:190px;height:190px;object-fit:cover;border-radius:50%;z-index:2;box-shadow:0 0 40px rgba(255,0,140,.35),0 0 80px rgba(255,120,0,.25)}
+.loader-ring{position:absolute;width:240px;height:240px;border-radius:50%;border:5px solid rgba(255,255,255,.08);border-top:5px solid #ff00aa;border-right:5px solid #ff7b00;animation:spin 3s linear infinite;box-shadow:0 0 30px rgba(255,0,140,.3)}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.intro-title{font-size:56px;margin:0;font-weight:950;font-style:italic;letter-spacing:2px;text-shadow:0 0 20px rgba(255,255,255,.25)}
+.intro-subtitle{color:#00a6ff;font-size:20px;font-weight:900;margin-top:-8px;margin-bottom:45px}
+.enter-btn{width:100%;max-width:320px;padding:18px;border-radius:18px;font-size:18px}
+.toast{position:fixed;top:18px;left:50%;transform:translateX(-50%);background:#101a2b;border:1px solid var(--line);color:white;padding:12px 18px;border-radius:999px;z-index:99;display:none;box-shadow:0 10px 25px rgba(0,0,0,.35)}
+.smallNote{font-size:12px;color:var(--muted);line-height:1.35;margin-top:6px}
 </style>
 </head>
 <body>
-<div class="toast" id="toast"></div><div class="app">
-<section id="inicio" class="screen active inicio-screen"><div class="intro-logo-container"><div class="loader-ring"></div><img src="logo.png" class="intro-logo" onerror="this.style.display='none'"></div><h1 class="intro-title">STATS</h1><div class="intro-subtitle">ELBAULDECHASKY</div><button onclick="entrarApp()">ENTRAR</button></section>
-<section id="resumen" class="screen"><div class="top"><div class="logo">📊 STATS</div><div class="brand">ELBAULDECHASKY</div><div class="hello">Dashboard manual inteligente</div></div><div class="card"><div class="label">Suscriptores totales</div><div class="big" id="totalSubs">0</div><div class="sub">Diferencia diaria: <b id="dailySubs" class="green">0</b></div></div><div class="card"><div class="label">Ingresos acumulados</div><div class="big green" id="totalMoney">0,00 €</div><div class="sub">Ingreso diario: <b id="dailyMoney" class="green">0,00 €</b></div></div><div class="grid"><div class="card"><div class="label">Mejor día subs</div><div class="value green" id="bestSubs">0</div><div class="sub" id="bestSubsDate">Sin datos</div></div><div class="card"><div class="label">Mejor día €</div><div class="value green" id="bestMoney">0,00 €</div><div class="sub" id="bestMoneyDate">Sin datos</div></div></div><button onclick="openModal()">AÑADIR / EDITAR DÍA ＋</button></section>
-<section id="nuevo" class="screen"><div class="title">Nuevo dato</div><div class="card"><div class="label">Modo flexible</div><div class="sub">Mete <b>total</b> o mete el dato del <b>día</b>. La app calcula automáticamente lo otro.</div><button class="good" style="margin-top:14px" onclick="openModal()">AÑADIR DATO</button></div><div class="card"><div class="label">Último dato guardado</div><div id="lastInfo" class="sub">Sin datos</div></div></section>
-<section id="graficas" class="screen"><div class="title">Gráficas</div><div class="card"><div class="label">Suscriptores totales</div><div class="chartBox"><canvas id="chartSubs" width="360" height="240"></canvas></div></div><div class="card"><div class="label">Ingresos acumulados</div><div class="chartBox"><canvas id="chartMoney" width="360" height="240"></canvas></div></div></section>
-<section id="historial" class="screen"><div class="title">Historial</div><div class="card"><table><thead><tr><th>Fecha</th><th>Subs</th><th>Día</th><th>Total €</th><th>Día €</th></tr></thead><tbody id="historyBody"></tbody></table><div id="emptyHistory" class="empty">Sin datos guardados.</div></div></section>
-<section id="ajustes" class="screen"><div class="title">Ajustes</div><div class="card"><div class="label">Copia de seguridad</div><button onclick="exportData()">EXPORTAR DATOS</button><br><br><button class="secondary" onclick="document.getElementById('importFile').click()">IMPORTAR DATOS</button><input id="importFile" type="file" accept=".json" style="display:none" onchange="importData(event)"></div><div class="card"><div class="label">Peligro</div><button class="danger" onclick="resetData()">BORRAR TODO</button></div><div class="card"><b>Versión manual inteligente</b><div class="sub">Datos de mayo precargados. Sin capturas.</div></div></section>
+<div class="toast" id="toast"></div>
+<div class="app">
+  <section id="inicio" class="screen active inicio-screen">
+    <div class="intro-logo-container"><div class="loader-ring"></div><img src="logo.png" class="intro-logo" onerror="this.style.display='none'"></div>
+    <h1 class="intro-title">STATS</h1>
+    <div class="intro-subtitle">ELBAULDECHASKY</div>
+    <button class="enter-btn" onclick="entrarApp()">ENTRAR</button>
+  </section>
+
+  <section id="resumen" class="screen">
+    <div class="top"><div class="logo">📊 STATS</div><div class="brand">ELBAULDECHASKY</div><div class="sub">Dashboard manual inteligente</div></div>
+    <div class="card">
+      <div class="label">Suscriptores totales</div>
+      <div class="big" id="subsTotal">0</div>
+      <div class="sub">Diferencia diaria: <b id="subsDay">—</b></div>
+    </div>
+    <div class="card">
+      <div class="label">Ingresos acumulados reales</div>
+      <div class="big green" id="incomeTotal">0,00 €</div>
+      <div class="sub">Ingreso último día: <b id="incomeDay">—</b></div>
+      <div class="smallNote">Aquí se suma lo que metes cada día como ingreso diario. No inventa un total de YouTube Studio.</div>
+    </div>
+    <div class="grid">
+      <div class="card mini"><div class="label">Mejor día subs</div><div class="value green" id="bestSubs">—</div><div class="sub" id="bestSubsDate">—</div></div>
+      <div class="card mini"><div class="label">Mejor día €</div><div class="value green" id="bestIncome">—</div><div class="sub" id="bestIncomeDate">—</div></div>
+    </div>
+    <button onclick="openEditor()">AÑADIR / EDITAR DÍA ＋</button>
+  </section>
+
+  <section id="nuevo" class="screen">
+    <div class="title">Añadir / Editar día</div>
+    <div class="card">
+      <div class="label">Fecha</div><input type="date" id="dateInput">
+      <div class="label" style="margin-top:12px">Suscriptores</div>
+      <select id="subsMode"><option value="total">Tengo total de suscriptores</option><option value="day">Tengo ganados/perdidos del día</option></select>
+      <input type="number" id="subsInput" inputmode="numeric" placeholder="Ej: 2313 o +9 / -2">
+      <div class="label" style="margin-top:12px">Ingresos</div>
+      <select id="incomeMode"><option value="day">Tengo ingreso del día</option><option value="total">Tengo total acumulado</option></select>
+      <input type="text" id="incomeInput" inputmode="decimal" placeholder="Ej: 6,53 o 77,72">
+      <div class="label" style="margin-top:12px">Nota</div><textarea id="noteInput" placeholder="Opcional"></textarea>
+      <div class="row"><button onclick="saveEntry()">GUARDAR</button><button class="secondary" onclick="clearForm()">LIMPIAR</button></div>
+    </div>
+  </section>
+
+  <section id="graficas" class="screen">
+    <div class="title">Gráficas</div>
+    <div class="card"><div class="label">Suscriptores diarios</div><div class="chartBox"><canvas id="subsChart" width="360" height="220"></canvas></div></div>
+    <div class="card"><div class="label">Ingresos diarios</div><div class="chartBox"><canvas id="incomeChart" width="360" height="220"></canvas></div></div>
+  </section>
+
+  <section id="historial" class="screen">
+    <div class="title">Historial</div>
+    <div class="card tableWrap">
+      <table>
+        <thead><tr><th>Fecha</th><th class="num">Subs</th><th class="num">Día</th><th class="num">Ingreso día</th><th class="num">Total €</th></tr></thead>
+        <tbody id="historyTable"></tbody>
+      </table>
+      <div class="smallNote">Pulsa una fila para editar ese día.</div>
+    </div>
+  </section>
+
+  <section id="ajustes" class="screen">
+    <div class="title">Ajustes</div>
+    <div class="card"><button onclick="exportData()">EXPORTAR DATOS</button><br><br><button class="secondary" onclick="document.getElementById('importFile').click()">IMPORTAR DATOS</button><input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)"></div>
+    <div class="card"><button class="danger" onclick="resetData()">BORRAR TODO</button></div>
+  </section>
 </div>
-<div class="nav"><button class="active" onclick="showScreen('resumen',this)"><span class="ico">🏠</span>Resumen</button><button onclick="showScreen('nuevo',this)"><span class="ico">➕</span>Nuevo</button><button onclick="showScreen('graficas',this)"><span class="ico">📈</span>Gráficas</button><button onclick="showScreen('historial',this)"><span class="ico">📋</span>Historial</button><button onclick="showScreen('ajustes',this)"><span class="ico">⚙️</span>Ajustes</button></div>
-<div class="modal" id="modal"><div class="modalCard"><div class="title" id="modalTitle">Añadir dato</div><div class="label">Fecha</div><input type="date" id="dateInput"><div class="grid" style="margin-top:14px"><div><div class="label">Subs modo</div><select id="subsMode"><option value="total">Total canal</option><option value="daily">Ganados/perdidos día</option></select></div><div><div class="label">Suscriptores</div><input type="number" id="subsInput" inputmode="numeric" placeholder="Ej: 2313 o -2"></div></div><div class="grid" style="margin-top:14px"><div><div class="label">€ modo</div><select id="moneyMode"><option value="total">Total acumulado</option><option value="daily">Ganado día</option></select></div><div><div class="label">Ingresos</div><input type="text" id="moneyInput" inputmode="decimal" placeholder="Ej: 24,22 o 1,35"></div></div><div class="label" style="margin-top:14px">Nota opcional</div><textarea id="noteInput" placeholder="Ej: Primeros días monetizado, vídeo subiendo..."></textarea><div class="row"><button class="secondary" onclick="closeModal()">CANCELAR</button><button class="good" onclick="saveEntry()">GUARDAR</button></div><button id="deleteBtn" class="danger" style="display:none;margin-top:10px" onclick="deleteCurrent()">BORRAR ESTE DÍA</button></div></div>
+
+<div class="nav">
+  <button class="active" onclick="showScreen('resumen',this)"><span class="ico">🏠</span>Resumen</button>
+  <button onclick="showScreen('nuevo',this)"><span class="ico">➕</span>Nuevo</button>
+  <button onclick="showScreen('graficas',this)"><span class="ico">📈</span>Gráficas</button>
+  <button onclick="showScreen('historial',this)"><span class="ico">📋</span>Historial</button>
+  <button onclick="showScreen('ajustes',this)"><span class="ico">⚙️</span>Ajustes</button>
+</div>
+
 <script>
-const STORAGE_KEY="stats_ebc_manual_flexible_v1";
-const initialData=[
-{date:"2026-05-01",subsTotal:1920,moneyTotal:null,note:"Datos mayo precargados"},{date:"2026-05-02",subsTotal:1925,moneyTotal:null,note:""},{date:"2026-05-03",subsTotal:1931,moneyTotal:null,note:""},{date:"2026-05-04",subsTotal:1934,moneyTotal:null,note:""},{date:"2026-05-05",subsTotal:1941,moneyTotal:null,note:""},{date:"2026-05-06",subsTotal:1952,moneyTotal:null,note:""},{date:"2026-05-07",subsTotal:1967,moneyTotal:null,note:""},{date:"2026-05-08",subsTotal:2001,moneyTotal:null,note:""},{date:"2026-05-09",subsTotal:2014,moneyTotal:null,note:""},{date:"2026-05-10",subsTotal:2028,moneyTotal:null,note:""},{date:"2026-05-11",subsTotal:2040,moneyTotal:null,note:""},{date:"2026-05-12",subsTotal:1835,moneyTotal:null,note:"⚠️ Revisar: posible error o bajada fuerte"},{date:"2026-05-13",subsTotal:2056,moneyTotal:null,note:""},{date:"2026-05-14",subsTotal:2089,moneyTotal:null,note:""},{date:"2026-05-15",subsTotal:2115,moneyTotal:null,note:""},{date:"2026-05-16",subsTotal:2136,moneyTotal:null,note:""},{date:"2026-05-17",subsTotal:2153,moneyTotal:null,note:""},{date:"2026-05-18",subsTotal:2181,moneyTotal:12.04,note:"Inicio monetización"},{date:"2026-05-19",subsTotal:2009,moneyTotal:12.09,note:"⚠️ Revisar: posible error o bajada fuerte"},{date:"2026-05-20",subsTotal:2229,moneyTotal:13.02,note:""},{date:"2026-05-21",subsTotal:2249,moneyTotal:12.74,note:"⚠️ Total € menor que día anterior"},{date:"2026-05-22",subsTotal:2267,moneyTotal:11.54,note:"⚠️ Total € menor que día anterior"},{date:"2026-05-23",subsTotal:2289,moneyTotal:9.66,note:"⚠️ Total € menor que día anterior"},{date:"2026-05-24",subsTotal:2304,moneyTotal:6.53,note:"⚠️ Total € menor que día anterior"},{date:"2026-05-25",subsTotal:2313,moneyTotal:null,note:""}
+const STORAGE_KEY = "stats_elbauldechasky_manual_final_v2";
+const INITIAL_DATA = [
+  {
+    "date": "2026-05-01",
+    "subsTotal": 1920,
+    "incomeDay": null,
+    "note": "Datos mayo precargados"
+  },
+  {
+    "date": "2026-05-02",
+    "subsTotal": 1925,
+    "incomeDay": null,
+    "note": ""
+  },
+  {
+    "date": "2026-05-03",
+    "subsTotal": 1931,
+    "incomeDay": null,
+    "note": ""
+  },
+  {
+    "date": "2026-05-04",
+    "subsTotal": 1934,
+    "incomeDay": null,
+    "note": ""
+  },
+  {
+    "date": "2026-05-05",
+    "subsTotal": 1941,
+    "incomeDay": null,
+    "note": ""
+  },
+  {
+    "date": "2026-05-06",
+    "subsTotal": 1952,
+    "incomeDay": null,
+    "note": ""
+  },
+  {
+    "date": "2026-05-07",
+    "subsTotal": 1967,
+    "incomeDay": null,
+    "note": ""
+  },
+  {
+    "date": "2026-05-08",
+    "subsTotal": 2001,
+    "incomeDay": null,
+    "note": ""
+  },
+  {
+    "date": "2026-05-09",
+    "subsTotal": 2014,
+    "incomeDay": null,
+    "note": ""
+  },
+  {
+    "date": "2026-05-10",
+    "subsTotal": 2028,
+    "incomeDay": null,
+    "note": ""
+  },
+  {
+    "date": "2026-05-11",
+    "subsTotal": 2040,
+    "incomeDay": null,
+    "note": ""
+  },
+  {
+    "date": "2026-05-12",
+    "subsTotal": 2056,
+    "incomeDay": null,
+    "note": "⚠️ Revisar: posible error o bajada fuerte"
+  },
+  {
+    "date": "2026-05-13",
+    "subsTotal": 2070,
+    "incomeDay": null,
+    "note": ""
+  },
+  {
+    "date": "2026-05-14",
+    "subsTotal": 2089,
+    "incomeDay": null,
+    "note": ""
+  },
+  {
+    "date": "2026-05-15",
+    "subsTotal": 2115,
+    "incomeDay": null,
+    "note": ""
+  },
+  {
+    "date": "2026-05-16",
+    "subsTotal": 2136,
+    "incomeDay": null,
+    "note": ""
+  },
+  {
+    "date": "2026-05-17",
+    "subsTotal": 2153,
+    "incomeDay": null,
+    "note": ""
+  },
+  {
+    "date": "2026-05-18",
+    "subsTotal": 2181,
+    "incomeDay": 12.04,
+    "note": "Inicio monetización"
+  },
+  {
+    "date": "2026-05-19",
+    "subsTotal": 2209,
+    "incomeDay": 12.19,
+    "note": "⚠️ Revisar: posible error o bajada fuerte"
+  },
+  {
+    "date": "2026-05-20",
+    "subsTotal": 2229,
+    "incomeDay": 13.02,
+    "note": ""
+  },
+  {
+    "date": "2026-05-21",
+    "subsTotal": 2249,
+    "incomeDay": 12.74,
+    "note": "⚠️ Total € menor que día anterior"
+  },
+  {
+    "date": "2026-05-22",
+    "subsTotal": 2267,
+    "incomeDay": 11.54,
+    "note": "⚠️ Total € menor que día anterior"
+  },
+  {
+    "date": "2026-05-23",
+    "subsTotal": 2289,
+    "incomeDay": 9.66,
+    "note": "⚠️ Total € menor que día anterior"
+  },
+  {
+    "date": "2026-05-24",
+    "subsTotal": 2304,
+    "incomeDay": 6.53,
+    "note": "⚠️ Total € menor que día anterior"
+  },
+  {
+    "date": "2026-05-25",
+    "subsTotal": 2313,
+    "incomeDay": null,
+    "note": ""
+  }
 ];
-let data=JSON.parse(localStorage.getItem(STORAGE_KEY)||"null")||initialData;let editingDate=null;
-function saveStorage(){localStorage.setItem(STORAGE_KEY,JSON.stringify(data))}function sortData(){data.sort((a,b)=>a.date.localeCompare(b.date))}function fmt(n){return Number(n||0).toLocaleString("es-ES")}function euro(n){return (Number(n||0)).toLocaleString("es-ES",{minimumFractionDigits:2,maximumFractionDigits:2})+" €"}function parseMoney(v){return Number(String(v||"").replace("€","").replace(/\s/g,"").replace(",", "."))||0}function todayISO(){const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}function fdate(iso){if(!iso)return"";const [y,m,d]=iso.split("-");return `${d}/${m}/${y}`}function toast(t){const el=document.getElementById("toast");el.textContent=t;el.style.display="block";setTimeout(()=>el.style.display="none",2200)}function previousBefore(date){sortData();return [...data].filter(x=>x.date<date).pop()||null}function diffSubs(i){return i>0&&data[i].subsTotal!=null&&data[i-1].subsTotal!=null?(data[i].subsTotal)-(data[i-1].subsTotal):0}function diffMoney(i){if(i<=0||data[i].moneyTotal==null||data[i-1].moneyTotal==null)return null;return (data[i].moneyTotal||0)-(data[i-1].moneyTotal||0)}function signed(n){return n>0?"+"+fmt(n):fmt(n)}function signedEuro(n){return n==null?"—":(n>0?"+":"")+euro(n)}
-function entrarApp(){document.getElementById("inicio").style.display="none";document.getElementById("resumen").classList.add("active");render()}function showScreen(id,btn){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));btn.classList.add("active");if(id==="graficas")setTimeout(drawCharts,80);render()}
-function openModal(date=null){editingDate=date;document.getElementById("modal").classList.add("active");document.getElementById("deleteBtn").style.display=date?"block":"none";document.getElementById("modalTitle").textContent=date?"Editar día":"Añadir dato";const item=date?data.find(x=>x.date===date):null;document.getElementById("dateInput").value=item?item.date:todayISO();document.getElementById("subsMode").value="total";document.getElementById("moneyMode").value="total";document.getElementById("subsInput").value=item&&item.subsTotal!=null?item.subsTotal:"";document.getElementById("moneyInput").value=item&&item.moneyTotal!=null?String(item.moneyTotal).replace(".",","):"";document.getElementById("noteInput").value=item?.note||""}function closeModal(){document.getElementById("modal").classList.remove("active");editingDate=null}
-function saveEntry(){const date=document.getElementById("dateInput").value,subsMode=document.getElementById("subsMode").value,moneyMode=document.getElementById("moneyMode").value,subsRaw=document.getElementById("subsInput").value,moneyRaw=document.getElementById("moneyInput").value,note=document.getElementById("noteInput").value.trim();if(!date){toast("Falta fecha");return}const prev=previousBefore(date);const existing=data.findIndex(x=>x.date===date);let old=existing>=0?data[existing]:{};let subsTotal=old.subsTotal??null,moneyTotal=old.moneyTotal??null;if(subsRaw!==""){const v=Number(subsRaw);subsTotal=subsMode==="total"?v:((prev?.subsTotal||0)+v)}if(moneyRaw.trim()!==""){const v=parseMoney(moneyRaw);moneyTotal=moneyMode==="total"?v:((prev?.moneyTotal||0)+v)}if(subsTotal==null&&moneyTotal==null){toast("Mete subs o ingresos");return}const newItem={date,subsTotal,moneyTotal,note};if(existing>=0)data[existing]=newItem;else data.push(newItem);sortData();saveStorage();closeModal();render();toast("Dato guardado ✅")}
-function deleteCurrent(){if(!editingDate)return;if(!confirm("¿Borrar este día?"))return;data=data.filter(x=>x.date!==editingDate);saveStorage();closeModal();render();toast("Día borrado")}
-function render(){sortData();const last=[...data].filter(x=>x.subsTotal!=null||x.moneyTotal!=null).pop();const idx=last?data.findIndex(x=>x.date===last.date):-1;document.getElementById("totalSubs").textContent=last?.subsTotal!=null?fmt(last.subsTotal):"0";const ds=idx>=0?diffSubs(idx):0,dailySubs=document.getElementById("dailySubs");dailySubs.textContent=signed(ds);dailySubs.className=ds<0?"red":"green";document.getElementById("totalMoney").textContent=last?.moneyTotal!=null?euro(last.moneyTotal):"0,00 €";const dm=idx>=0?diffMoney(idx):null,dailyMoney=document.getElementById("dailyMoney");dailyMoney.textContent=signedEuro(dm);dailyMoney.className=dm<0?"red":"green";let bestS={v:-999999,date:null},bestM={v:-999999,date:null};for(let i=1;i<data.length;i++){let s=diffSubs(i);if(s>bestS.v){bestS={v:s,date:data[i].date}}let m=diffMoney(i);if(m!=null&&m>bestM.v){bestM={v:m,date:data[i].date}}}document.getElementById("bestSubs").textContent=bestS.date?signed(bestS.v):"0";document.getElementById("bestSubsDate").textContent=bestS.date?fdate(bestS.date):"Sin datos";document.getElementById("bestMoney").textContent=bestM.date?signedEuro(bestM.v):"0,00 €";document.getElementById("bestMoneyDate").textContent=bestM.date?fdate(bestM.date):"Sin datos";document.getElementById("lastInfo").innerHTML=last?`Último día: <b>${fdate(last.date)}</b><br>Subs: <b>${fmt(last.subsTotal)}</b><br>Ingresos: <b>${last.moneyTotal==null?"—":euro(last.moneyTotal)}</b>`:"Sin datos";renderHistory();drawCharts()}
-function renderHistory(){const tb=document.getElementById("historyBody");tb.innerHTML="";document.getElementById("emptyHistory").style.display=data.length?"none":"block";[...data].reverse().forEach(item=>{const i=data.findIndex(x=>x.date===item.date),s=diffSubs(i),m=diffMoney(i);tb.innerHTML+=`<tr onclick="openModal('${item.date}')"><td>${fdate(item.date)}</td><td>${item.subsTotal==null?"—":fmt(item.subsTotal)}</td><td class="${s<0?"red":"green"}">${signed(s)}</td><td>${item.moneyTotal==null?"—":euro(item.moneyTotal)}</td><td class="${m!=null&&m<0?"red":"green"}">${signedEuro(m)}</td></tr>`})}
-function drawLine(canvasId,values,color){const c=document.getElementById(canvasId);if(!c)return;const ctx=c.getContext("2d");ctx.clearRect(0,0,c.width,c.height);const vals=values.filter(v=>v!=null);if(vals.length<2){ctx.fillStyle="#91a0b8";ctx.font="15px Arial";ctx.textAlign="center";ctx.fillText("Faltan datos para gráfica",c.width/2,c.height/2);return}const min=Math.min(...vals),max=Math.max(...vals),range=max-min||1,p=28,w=c.width-p*2,h=c.height-p*2;ctx.strokeStyle="rgba(255,255,255,.08)";ctx.lineWidth=1;for(let i=0;i<5;i++){let y=p+(h/4)*i;ctx.beginPath();ctx.moveTo(p,y);ctx.lineTo(c.width-p,y);ctx.stroke()}const pts=vals.map((v,i)=>({x:p+(w/(vals.length-1))*i,y:p+h-((v-min)/range)*h,v}));ctx.beginPath();pts.forEach((pt,i)=>i?ctx.lineTo(pt.x,pt.y):ctx.moveTo(pt.x,pt.y));ctx.strokeStyle=color;ctx.lineWidth=4;ctx.shadowColor=color;ctx.shadowBlur=12;ctx.stroke();ctx.shadowBlur=0;pts.forEach(pt=>{ctx.beginPath();ctx.arc(pt.x,pt.y,4,0,Math.PI*2);ctx.fillStyle="#fff";ctx.fill()})}function drawCharts(){drawLine("chartSubs",data.map(x=>x.subsTotal),"#00a6ff");drawLine("chartMoney",data.map(x=>x.moneyTotal),"#20e070")}
-function exportData(){const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="stats-elbauldechasky-backup.json";a.click();URL.revokeObjectURL(url)}function importData(e){const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=ev=>{try{data=JSON.parse(ev.target.result);sortData();saveStorage();render();toast("Importado ✅")}catch{toast("Archivo no válido")}};r.readAsText(file)}function resetData(){if(!confirm("¿Borrar todos los datos?"))return;localStorage.removeItem(STORAGE_KEY);data=[];render();toast("Borrado")}render();
+let data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null") || INITIAL_DATA;
+
+function normalizeMoney(v){
+  if(v === null || v === undefined || v === "") return null;
+  return Number(String(v).replace("€","").replace(",",".").replace(/[^0-9.\-]/g,"")) || 0;
+}
+function saveStorage(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+function sortData(){ data.sort((a,b)=>a.date.localeCompare(b.date)); }
+function formatNumber(n){ return Number(n||0).toLocaleString("es-ES"); }
+function formatMoney(n){ return (Number(n||0)).toLocaleString("es-ES",{minimumFractionDigits:2,maximumFractionDigits:2})+" €"; }
+function formatDate(iso){ const [y,m,d]=iso.split("-"); return `${d}/${m}/${y}`; }
+function todayISO(){ const d=new Date(); d.setMinutes(d.getMinutes()-d.getTimezoneOffset()); return d.toISOString().slice(0,10); }
+function toast(msg){ const t=document.getElementById("toast"); t.textContent=msg; t.style.display="block"; setTimeout(()=>t.style.display="none",2200); }
+function signed(n,suffix=""){ if(n===null||n===undefined) return "—"; return (n>0?"+":"")+formatNumber(n)+suffix; }
+function signedMoney(n){ if(n===null||n===undefined) return "—"; return (n>0?"+":"")+formatMoney(n); }
+function cls(n){ return n>0?"green":n<0?"red":"yellow"; }
+
+function entrarApp(){
+  document.getElementById("inicio").style.display="none";
+  document.getElementById("resumen").classList.add("active");
+  render();
+}
+
+function showScreen(id, btn){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  if(id==="graficas") setTimeout(drawCharts,100);
+}
+
+function prevFor(date){
+  sortData();
+  const idx=data.findIndex(x=>x.date===date);
+  return idx>0 ? data[idx-1] : null;
+}
+
+function subsDayAt(i){
+  if(i<=0 || data[i].subsTotal==null || data[i-1].subsTotal==null) return 0;
+  return data[i].subsTotal - data[i-1].subsTotal;
+}
+
+function incomeAccumUntil(i){
+  let sum=0;
+  for(let x=0;x<=i;x++) if(data[x].incomeDay!=null) sum += Number(data[x].incomeDay);
+  return sum;
+}
+
+function render(){
+  sortData();
+  renderSummary();
+  renderHistory();
+  drawCharts();
+  saveStorage();
+}
+
+function renderSummary(){
+  const last = [...data].reverse().find(x=>x.subsTotal!=null) || null;
+  const lastIdx = last ? data.findIndex(x=>x.date===last.date) : -1;
+  const lastIncomeIdx = (()=>{ for(let i=data.length-1;i>=0;i--) if(data[i].incomeDay!=null) return i; return -1; })();
+  const totalIncome = data.reduce((s,x)=>s+(x.incomeDay!=null?Number(x.incomeDay):0),0);
+
+  document.getElementById("subsTotal").textContent = last ? formatNumber(last.subsTotal) : "0";
+  const sd = lastIdx>=0 ? subsDayAt(lastIdx) : null;
+  const subsDayEl=document.getElementById("subsDay");
+  subsDayEl.textContent = signed(sd);
+  subsDayEl.className = cls(sd||0);
+
+  document.getElementById("incomeTotal").textContent = formatMoney(totalIncome);
+  const iday = lastIncomeIdx>=0 ? data[lastIncomeIdx].incomeDay : null;
+  const incomeDayEl=document.getElementById("incomeDay");
+  incomeDayEl.textContent = signedMoney(iday);
+  incomeDayEl.className = cls(iday||0);
+
+  let bestS={v:null,date:null}, bestI={v:null,date:null};
+  for(let i=1;i<data.length;i++){
+    const v=subsDayAt(i);
+    if(bestS.v===null || v>bestS.v) bestS={v,date:data[i].date};
+  }
+  data.forEach(x=>{ if(x.incomeDay!=null && (bestI.v===null || x.incomeDay>bestI.v)) bestI={v:x.incomeDay,date:x.date}; });
+  document.getElementById("bestSubs").textContent = bestS.v===null ? "—" : signed(bestS.v);
+  document.getElementById("bestSubsDate").textContent = bestS.date ? formatDate(bestS.date) : "—";
+  document.getElementById("bestIncome").textContent = bestI.v===null ? "—" : signedMoney(bestI.v);
+  document.getElementById("bestIncomeDate").textContent = bestI.date ? formatDate(bestI.date) : "—";
+}
+
+function renderHistory(){
+  const tbody=document.getElementById("historyTable");
+  tbody.innerHTML="";
+  [...data].reverse().forEach(item=>{
+    const i=data.findIndex(x=>x.date===item.date);
+    const sd=subsDayAt(i);
+    const acc=incomeAccumUntil(i);
+    tbody.innerHTML += `<tr onclick="editEntry('${item.date}')">
+      <td>${formatDate(item.date)}</td>
+      <td class="num">${item.subsTotal!=null?formatNumber(item.subsTotal):"—"}</td>
+      <td class="num ${cls(sd)}">${signed(sd)}</td>
+      <td class="num ${cls(item.incomeDay||0)}">${item.incomeDay!=null?signedMoney(item.incomeDay):"—"}</td>
+      <td class="num">${acc>0?formatMoney(acc):"—"}</td>
+    </tr>`;
+  });
+}
+
+function openEditor(){ showScreen("nuevo", document.querySelectorAll(".nav button")[1]); clearForm(false); document.getElementById("dateInput").value=todayISO(); }
+function clearForm(resetDate=true){
+  if(resetDate) document.getElementById("dateInput").value=todayISO();
+  document.getElementById("subsMode").value="total";
+  document.getElementById("subsInput").value="";
+  document.getElementById("incomeMode").value="day";
+  document.getElementById("incomeInput").value="";
+  document.getElementById("noteInput").value="";
+}
+
+function editEntry(date){
+  showScreen("nuevo", document.querySelectorAll(".nav button")[1]);
+  const item=data.find(x=>x.date===date);
+  if(!item) return;
+  document.getElementById("dateInput").value=item.date;
+  document.getElementById("subsMode").value="total";
+  document.getElementById("subsInput").value=item.subsTotal ?? "";
+  document.getElementById("incomeMode").value="day";
+  document.getElementById("incomeInput").value=item.incomeDay!=null ? String(item.incomeDay).replace(".",",") : "";
+  document.getElementById("noteInput").value=item.note || "";
+}
+
+function saveEntry(){
+  const date=document.getElementById("dateInput").value;
+  const subsMode=document.getElementById("subsMode").value;
+  const subsVal=Number(document.getElementById("subsInput").value);
+  const incomeMode=document.getElementById("incomeMode").value;
+  const moneyVal=normalizeMoney(document.getElementById("incomeInput").value);
+  const note=document.getElementById("noteInput").value.trim();
+  if(!date) return toast("Falta fecha");
+  sortData();
+  let idx=data.findIndex(x=>x.date===date);
+  if(idx<0){ data.push({date,subsTotal:null,incomeDay:null,note:""}); sortData(); idx=data.findIndex(x=>x.date===date); }
+  const prev=idx>0 ? data[idx-1] : null;
+
+  if(!Number.isNaN(subsVal) && document.getElementById("subsInput").value!==""){
+    if(subsMode==="total") data[idx].subsTotal=subsVal;
+    else data[idx].subsTotal=(prev?.subsTotal||0)+subsVal;
+  }
+
+  if(document.getElementById("incomeInput").value!==""){
+    if(incomeMode==="day") data[idx].incomeDay=moneyVal;
+    else {
+      let prevAccum=0;
+      for(let i=0;i<idx;i++) if(data[i].incomeDay!=null) prevAccum += Number(data[i].incomeDay);
+      data[idx].incomeDay = Math.max(0, moneyVal - prevAccum);
+    }
+  }
+
+  data[idx].note=note;
+  render();
+  toast("Día guardado ✅");
+  showScreen("historial", document.querySelectorAll(".nav button")[3]);
+}
+
+function drawOne(canvasId, values, isMoney=false){
+  const canvas=document.getElementById(canvasId); if(!canvas) return;
+  const ctx=canvas.getContext("2d"); ctx.clearRect(0,0,canvas.width,canvas.height);
+  if(values.length<2){ ctx.fillStyle="#91a0b8"; ctx.font="15px Arial"; ctx.textAlign="center"; ctx.fillText("Faltan datos",canvas.width/2,canvas.height/2); return; }
+  const min=Math.min(...values,0), max=Math.max(...values,1), range=max-min||1;
+  const p=28,w=canvas.width-p*2,h=canvas.height-p*2;
+  ctx.strokeStyle="rgba(255,255,255,.08)"; ctx.lineWidth=1;
+  for(let i=0;i<5;i++){ const y=p+(h/4)*i; ctx.beginPath(); ctx.moveTo(p,y); ctx.lineTo(canvas.width-p,y); ctx.stroke(); }
+  const coords=values.map((v,i)=>({x:p+(w/(values.length-1))*i,y:p+h-((v-min)/range)*h,v}));
+  const grad=ctx.createLinearGradient(0,0,0,canvas.height); grad.addColorStop(0,"rgba(0,119,255,.45)"); grad.addColorStop(1,"rgba(0,119,255,0)");
+  ctx.beginPath(); coords.forEach((pt,i)=>i?ctx.lineTo(pt.x,pt.y):ctx.moveTo(pt.x,pt.y)); ctx.lineTo(coords.at(-1).x,canvas.height-p); ctx.lineTo(coords[0].x,canvas.height-p); ctx.closePath(); ctx.fillStyle=grad; ctx.fill();
+  ctx.beginPath(); coords.forEach((pt,i)=>i?ctx.lineTo(pt.x,pt.y):ctx.moveTo(pt.x,pt.y)); ctx.strokeStyle="#00a6ff"; ctx.lineWidth=4; ctx.shadowColor="#0077ff"; ctx.shadowBlur=12; ctx.stroke(); ctx.shadowBlur=0;
+  coords.forEach(pt=>{ ctx.beginPath(); ctx.arc(pt.x,pt.y,4,0,Math.PI*2); ctx.fillStyle="#20e070"; ctx.fill(); });
+}
+function drawCharts(){
+  sortData();
+  drawOne("subsChart", data.map((x,i)=>subsDayAt(i)).slice(-30));
+  drawOne("incomeChart", data.map(x=>x.incomeDay ?? 0).slice(-30), true);
+}
+
+function exportData(){
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob); const a=document.createElement("a");
+  a.href=url; a.download="stats-elbauldechasky-backup.json"; a.click(); URL.revokeObjectURL(url);
+}
+function importData(event){
+  const file=event.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{ try{ data=JSON.parse(e.target.result); saveStorage(); render(); toast("Datos importados ✅"); }catch{ toast("Archivo no válido"); } };
+  reader.readAsText(file);
+}
+function resetData(){
+  if(!confirm("¿Borrar todos los datos?")) return;
+  data=[]; saveStorage(); render(); toast("Datos borrados");
+}
+
+render();
 </script>
 </body>
 </html>
